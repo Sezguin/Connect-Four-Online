@@ -1,0 +1,9 @@
+{
+    "name": "connect-four-online-client-and-server",
+    "version": "0.0.1",
+    "description": "Package containing the dependancies for the Connect Four Online client and server.",
+    "dependencies": {
+        "express": "^4.15.2",
+        "socket.io": "^2.1.1"
+    }
+}
