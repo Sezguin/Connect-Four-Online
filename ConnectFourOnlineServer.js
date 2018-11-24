@@ -1,6 +1,6 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = require("express")();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 var port = 3000;
 
 app.get("/ConnectFourOnlineClient.js", function(req, res) {
@@ -18,12 +18,12 @@ app.get("/", function(req, res){
 io.on("connection", function(socket){
     console.log("A user has connected.");
 
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
+    socket.on("disconnect", function(){
+        console.log("user disconnected");
     });
 
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+    socket.on("chat message", function(msg){
+        io.emit("chat message", msg);
     });
 });
 

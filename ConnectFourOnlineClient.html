@@ -4,36 +4,30 @@
         <title>Connect Four Online</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <script src="/ConnectFourOnlineClient.js"></script>
         <link rel="stylesheet" href="ConnectFourOnlineClient.css">
 
     </head>
-
-    <script src="/socket.io/socket.io.js"></script>
-
-    <script>
-        $(function () {
-            var socket = io();
-            $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
-            });
-
-            socket.on("chat message", function(msg) {
-                $('#messages').append($('<li>').text(msg));
-            });
-        });
-    </script>
-
     <body>
         <div id = "startButtonDiv">
-            <button id = "startButton">Start</button>
+            <button id = "startButton">Start</button><p></p>
+            <button id = "openChatWindowButton" onclick="openChatWindow()">Open Chat</button>
         </div>
 
-        <ul id="messages"></ul>
-        <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
+        <div class="chat-popup" id="chatWindow">
+            <form class="chatWindowFormContainer">
+                <h1 id = chatWindowHeading>Chat</h1>
+          
+                <label for="msg">
+                    <b>Message</b>
+                </label>
+                <ul id = "chatWindowMessageHistory"></ul>
+                <form>
+                    <input id = "chatMessageToSend" autocomplete="off" /><button id = "sendChatMessageButton">Send</button>
+                    <button type = "button" id = "closeChatWindowButton" onclick="closeChatWindow()">Close</button>
+                </form>            
+            </form>
+        </div>
     </body>
 </html>
