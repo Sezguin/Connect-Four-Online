@@ -15,6 +15,10 @@ app.get("/", function(req, res){
     res.sendFile(__dirname + "/ConnectFourOnlineClient.html");
 });
 
+app.get("/Start", function(req, res){
+    res.sendFile(__dirname + "/ConnectFourOnlineStartPage.html");
+});
+
 io.on("connection", function(socket){
     console.log("A user has connected.");
 
