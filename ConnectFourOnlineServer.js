@@ -3,6 +3,8 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var port = 3000;
 
+var mainPage = "/"
+
 app.get("/ConnectFourOnlineClient.js", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineClient.js");
 });
@@ -11,7 +13,7 @@ app.get("/ConnectFourOnlineClient.css", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
 });
 
-app.get("/", function(req, res){
+app.get("/Main", function(req, res){
     res.sendFile(__dirname + "/ConnectFourOnlineClient.html");
 });
 
