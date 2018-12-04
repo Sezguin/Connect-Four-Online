@@ -1,12 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font: 13px Helvetica, Arial;
-    background: white;
+    font: 13px "Montserrat", sans-serif;
+    background: rgb(255, 255, 255);
 }
 
 form {
@@ -47,30 +41,56 @@ form button {
 
 /* Start page style settings. */
 
-#startPageTitleDiv {
+#startPageTitleJumbotron {
+    animation-name: fadeInDown;
+    animation-duration: 2s;
+    margin: 0px;
+}
 
+#startPageLoginAndRegisterJumbotron {
+    animation-name: fadeInUp;
+    animation-duration: 2s;
+    margin: 0px;
+    padding: 130px;
 }
 
 #startPageTitleText {
     text-align: center;
     font-size: 100px;
-    padding-bottom: 200px;
+    padding-bottom: 50px;
     animation-name: fadeInDown;
-    animation-duration: 1.5s
+    animation-duration: 2s
+}
+
+#startPageSubTitleText {
+    text-align: center;
+    font-size: 40px;
+    animation-name: fadeInDown;
+    animation-duration: 2s;
+}
+
+#startPageMainContentContainer {
+    width: 100%;
+    margin: 50px;
+    text-align: center;
+    padding-left: 300px;
+    padding-right: 300px;
+    animation-name: zoomIn;
+    animation-duration: 4s;
+    font-size: 20px;
 }
 
 #loginAndRegisterDiv {
     text-align: center;
-    animation-name: fadeInUp;
-    animation-duration: 2.2s
+    animation-name: zoomIn;
+    animation-duration: 3s
 }
 
 #loginButton {
-    width: 25%;
-    height: 40%;
+    width: 350px;
+    height: 100px;
     font-weight: 400;
-    font-size: 60px;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 50px;
     background-color: #A5BBCD;
     border: none;
     color: white;
@@ -79,6 +99,7 @@ form button {
     border-width: 1px;
     border-color: rgb(199, 199, 199);
     border-radius: 10px;
+    margin: 20px;
     outline: none;
 }
 
@@ -87,11 +108,10 @@ form button {
 }
 
 #registerButton {
-    width: 25%;
-    height: 40%;
+    width: 350px;
+    height: 100px;
     font-weight: 400;
-    font-size: 60px;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 50px;
     background-color: #A5BBCD;
     border: none;
     color: white;
@@ -100,6 +120,7 @@ form button {
     border-width: 1px;
     border-color: rgb(199, 199, 199);
     border-radius: 10px;
+    margin: 20px;
     outline: none;
 }
 
@@ -108,7 +129,6 @@ form button {
 }
 
 #loginAndRregistrationModalTitle {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 40px;
     text-align: center;
@@ -127,7 +147,6 @@ form button {
     border-color: rgb(126, 175, 128);
     border-radius: 10px;
     border-width: 2px;
-    font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 20px;
     cursor: pointer;
@@ -147,7 +166,6 @@ form button {
     border-color: rgb(179, 179, 179);
     border-radius: 10px;
     border-width: 2px;
-    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 20px;
     color: black;
@@ -285,6 +303,14 @@ form button {
     text-align: center;
 }
 
+.material-icons {
+    font-size: 48px;
+}
+
+.navbar-static-top {
+    margin-bottom: 0px;
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -310,4 +336,16 @@ form button {
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
     }
-  }
+}
+
+@keyframes zoomIn {
+    from {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+  
+    50% {
+      opacity: 1;
+    }
+}

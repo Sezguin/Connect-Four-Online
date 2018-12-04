@@ -1,6 +1,9 @@
-var app = require("express")();
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
+var express = require('express')
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
 var port = 3000;
 
 var mainPage = "/"
@@ -13,12 +16,16 @@ app.get("/ConnectFourOnlineClient.css", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
 });
 
-app.get("/Main", function(req, res){
-    res.sendFile(__dirname + "/ConnectFourOnlineClient.html");
+app.get("/LoginPage", function(req, res){
+    res.sendFile(__dirname + "/ConnectFourOnlineLoginPage.html");
 });
 
-app.get("/Start", function(req, res){
-    res.sendFile(__dirname + "/ConnectFourOnlineStartPage.html");
+app.get("/HomePage", function(req, res){
+    res.sendFile(__dirname + "/ConnectFourOnlineHomePage.html");
+});
+
+app.get("/HowToPlayPage", function(req, res){
+    res.sendFile(__dirname + "/ConnectFourOnlineHowToPlayPage.html");
 });
 
 io.on("connection", function(socket){
@@ -33,6 +40,6 @@ io.on("connection", function(socket){
     });
 });
 
-http.listen(port, function(){
+server.listen(port, function(){
   console.log("Connect Four Online Server is listening on port: " + port);
 });

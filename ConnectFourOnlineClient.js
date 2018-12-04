@@ -20,13 +20,21 @@ $(function () {
 });
 
 function validateLoginDetails() {
-    window.location.href = "/Main";
+    window.location.href = "/HomePage";
 }
 
-function startProfileCreation() {
-    window.location.href = "/Main";
+function registerLoginDetails() {
+    window.location.href = "/HomePage";
 }
 
-function exitToStartMenu() {
-    window.location.href = "/Start";
+function goToHowToPlayPage() {
+    window.location.href = "/HowToPlayPage";
+}
+
+function goToLoginPage() {
+    window.location.href = "/LoginPage";
+}
+
+function goToProfilePage() {
+    window.location.href = "/LoginPage";
 }

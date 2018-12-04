@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Connect Four Online Start Page</title>
+
+    <!-- JQuery dependencies. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap dependencies. -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!-- Custom client dependencies. -->
+    <script src="ConnectFourOnlineClient.js"></script>
+    <link rel="stylesheet" href="ConnectFourOnlineClient.css">
+
+    <!-- Socket.io dependencies. -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Custom fonts. -->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom icons. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+</head>
+
+<body>
+    <!-- Top login page navigation bar. -->
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Connect Four Online</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">How To Play</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="validateLoginDetails()">Login</a></li>
+                            <li><a href="#" onclick="registerLoginDetails()">Register</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main title Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid" id="startPageTitleJumbotron">
+        <div class="container">
+            <h1 id="startPageTitleText">Connect Four Online</h1>
+            <hr class="my-4">
+            <h1 id="startPageSubTitleText">The ultimate online gaming experience.<h1>
+        </div>
+    </div>
+
+    <!-- Sub-text Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid" id="startPageLoginAndRegisterJumbotron">
+        <div class="container">
+            <div id="loginAndRegisterDiv">
+                <button id="loginButton" data-toggle="modal" data-target="#loginModal">Login</button>
+                <Button id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="startPageMainContentContainer">
+        <div class="row">
+            <div class="col-md-4">
+                <i class="material-icons">supervisor_account</i>
+                <h2>Connect With Friends</h2>
+                <p>With an easy to use interface, you can connect and challenge others to epic Connect Four Online games.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="material-icons">message</i>
+                <h2>Chat Online</h2>
+                <p>The integrated instant messenging service allows you to chat freely whilst playing your favourite game.</p>
+            </div>
+            <div class="col-md-4">
+                <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+                <h2>Easy to Play</h2>
+                <p>Never played before? No problem! Check the 'How to Play' page for more information, or just straight in for a hand on approach.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Modals. -->    
+
+    <!-- Login modal. -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login</h5>
+                    </div>
+                    <div class="modal-body">
+                        This is the login section.
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" onclick="validateLoginDetails()">Login <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration modal. -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration</h5>
+                    </div>
+                    <div class="modal-body">
+                        This is the registration section.
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" onclick="registerLoginDetails()">Register <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
