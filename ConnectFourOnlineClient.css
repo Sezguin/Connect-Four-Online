@@ -51,13 +51,13 @@ form button {
     animation-name: fadeInUp;
     animation-duration: 2s;
     margin: 0px;
-    padding: 130px;
+    padding: 60px;
 }
 
 #startPageTitleText {
     text-align: center;
     font-size: 100px;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
     animation-name: fadeInDown;
     animation-duration: 2s
 }
@@ -71,10 +71,8 @@ form button {
 
 #startPageMainContentContainer {
     width: 100%;
-    margin: 50px;
+    margin: 50px 0px;
     text-align: center;
-    padding-left: 300px;
-    padding-right: 300px;
     animation-name: zoomIn;
     animation-duration: 4s;
     font-size: 20px;
@@ -344,7 +342,7 @@ form button {
       -webkit-transform: scale3d(0.3, 0.3, 0.3);
       transform: scale3d(0.3, 0.3, 0.3);
     }
-  
+
     50% {
       opacity: 1;
     }
