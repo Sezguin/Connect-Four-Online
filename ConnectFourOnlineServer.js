@@ -8,26 +8,37 @@ var port = 3000;
 
 var mainPage = "/"
 
+// Adding default stylesheet and functionality.
 app.get("/ConnectFourOnlineClient.js", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineClient.js");
 });
-
 app.get("/ConnectFourOnlineClient.css", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
 });
 
-app.get("/LoginPage", function(req, res){
+// Adding QUnit stylesheet and functionality.
+app.get("/qunit-2.4.0.js", function(req, res) {
+  res.sendFile(__dirname + "/qunit-2.4.0.js")
+});
+app.get("/qunit-2.4.0.css", function(req, res) {
+    res.sendFile(__dirname + "/qunit-2.4.0.css");
+});
+
+// Adding all HTML pages.
+app.get("/LoginPage", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineLoginPage.html");
 });
-
-app.get("/HomePage", function(req, res){
+app.get("/HomePage", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineHomePage.html");
 });
-
-app.get("/HowToPlayPage", function(req, res){
+app.get("/HowToPlayPage", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineHowToPlayPage.html");
 });
+app.get("/TestsPage", function(req, res) {
+  res.sendFile(__dirname + "/ConnectFourOnlineTestsPage.html")
+})
 
+// SocketIO functions.
 io.on("connection", function(socket){
     console.log("A user has connected.");
 

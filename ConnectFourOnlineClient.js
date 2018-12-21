@@ -27,6 +27,10 @@ function registerLoginDetails() {
     window.location.href = "/HomePage";
 }
 
+function goToTestsPage() {
+  window.location.href = "/TestsPage"
+}
+
 function goToHowToPlayPage() {
     window.location.href = "/HowToPlayPage";
 }
@@ -36,5 +40,5 @@ function goToLoginPage() {
 }
 
 function goToProfilePage() {
-    window.location.href = "/LoginPage";
+    window.location.href = "/ProfilePage";
 }
