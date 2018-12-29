@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Connect Four Online</title>
+        <title>Connect Four Online Home Page</title>
 
         <!-- JQuery dependencies. -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -22,6 +22,12 @@
         <!-- Custom fonts. -->
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
+        <!-- Custom icons. -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!-- QUnit dependencies. -->
+        <link rel="stylesheet" href="qunit-2.4.0.css">
+
     </head>
     <body>
         <!-- Top home page navigation bar. -->
@@ -38,6 +44,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
+                      <li><a href="#" data-toggle="modal" data-target="#testingModal">Tests</a></li>
                         <li><a href="#">How To Play</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
@@ -50,19 +57,44 @@
                 </div>
             </div>
         </nav>
+
+        <div>
+          Main content goes here.
+        </div>
+
         <div class="chat-popup" id="chatWindow">
             <form class="chatWindowFormContainer">
-                <h1 id = chatWindowHeading>Chat</h1>
-          
-                <label for="msg">
-                    <b>Message</b>
-                </label>
-                <ul id = "chatWindowMessageHistory"></ul>
+                <h1 id=chatWindowHeading>Chat</h1>
+                <ul id="chatWindowMessageHistory"></ul>
                 <form>
-                    <input id = "chatMessageToSend" autocomplete="off" /><button id = "sendChatMessageButton">Send</button>
-                    <button type = "button" id = "closeChatWindowButton" onclick="closeChatWindow()">Close</button>
-                </form>            
+                    <input id="chatMessageToSend" autocomplete="off" />
+                    <button class="btn btn-lg btn-primary" id="sendChatMessageButton">Send<span class="material-icons" id="smaller-material-icons">send</span>
+                </form>
             </form>
+        </div>
+
+        <nav class="navbar navbar-inverse navbar-fixed-bottom" id="homePageNavigationBarBottom">
+            <a href="#" class="btn btn-default pull-right" onclick="openChatWindow()" id="bottomNavigationButton">Open Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_up</span></a>
+            <a href="#" class="btn btn-default pull-right" onclick="closeChatWindow()" id="bottomNavigationButton">Close Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_down</span></a>
+        </nav>
+
+    <!-- Modals. -->
+        <!-- Testing modal -->
+        <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- QUnit Elements. -->
+                    <div id="qunit"></div>
+                    <div id="qunit-fixture"></div>
+
+                    <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
+                    <script src="/ConnectFourOnlineTests.js"></script>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
         </div>
     </body>
 </html>

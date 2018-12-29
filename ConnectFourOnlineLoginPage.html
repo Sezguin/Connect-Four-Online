@@ -26,6 +26,9 @@
     <!-- Custom icons. -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+    <!-- QUnit dependencies. -->
+    <link rel="stylesheet" href="qunit-2.4.0.css">
+
 </head>
 
 <body>
@@ -43,7 +46,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" onclick="goToTestsPage()">Tests</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#testingModal">Tests</a></li>
                     <li><a href="#" onclick="goToHowToPlayPage()">How To Play</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
@@ -58,20 +61,19 @@
     </nav>
 
     <!-- Main title Jumbotron display. -->
-    <div class="jumbotron jumbotron-fluid" id="startPageTitleJumbotron">
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageTitleJumbotron">
         <div class="container">
             <h1 id="startPageTitleText">Connect Four Online</h1>
-            <hr class="my-4">
             <h1 id="startPageSubTitleText">The ultimate online gaming experience.<h1>
         </div>
     </div>
 
     <!-- Sub-text Jumbotron display. -->
-    <div class="jumbotron jumbotron-fluid" id="startPageLoginAndRegisterJumbotron">
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageLoginAndRegisterJumbotron">
         <div class="container">
             <div id="loginAndRegisterDiv">
                 <button id="loginButton" data-toggle="modal" data-target="#loginModal">Login</button>
-                <Button id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
+                <button id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
             </div>
         </div>
     </div>
@@ -91,13 +93,12 @@
             <div class="col-md-4">
                 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
                 <h2>Easy to Play</h2>
-                <p>Never played before? No problem! Check the 'How to Play' page for more information, or just straight in for a hand on approach.</p>
+                <p>Never played before? No problem! Check the 'How to Play' page for more information, or just jump straight in for a hands on approach.</p>
             </div>
         </div>
     </div>
 
 <!-- Modals. -->
-
     <!-- Login modal. -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="registerAndLoginModalAlignment">
@@ -107,19 +108,7 @@
                         <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login</h5>
                     </div>
                     <div class="modal-body">
-                        <!-- <form id="Login">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="inputEmail" placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                            </div>
-                            <div class="forgot">
-                                <a href="reset.html">Forgot password?</a>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </form> -->
+                      This is the login section.
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="btn btn-lg btn-primary" onclick="validateLoginDetails()">Login <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -149,6 +138,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Testing modal -->
+    <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- QUnit Elements. -->
+                <div id="qunit"></div>
+                <div id="qunit-fixture"></div>
+
+                <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
+                <script src="/ConnectFourOnlineTests.js"></script>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

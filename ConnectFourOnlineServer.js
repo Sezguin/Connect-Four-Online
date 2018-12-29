@@ -3,28 +3,10 @@ var http = require('http');
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-
 var port = 3000;
-
 var mainPage = "/"
 
-// Adding default stylesheet and functionality.
-app.get("/ConnectFourOnlineClient.js", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineClient.js");
-});
-app.get("/ConnectFourOnlineClient.css", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
-});
-
-// Adding QUnit stylesheet and functionality.
-app.get("/qunit-2.4.0.js", function(req, res) {
-  res.sendFile(__dirname + "/qunit-2.4.0.js")
-});
-app.get("/qunit-2.4.0.css", function(req, res) {
-    res.sendFile(__dirname + "/qunit-2.4.0.css");
-});
-
-// Adding all HTML pages.
+// Adding all HTML files.
 app.get("/LoginPage", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineLoginPage.html");
 });
@@ -37,6 +19,37 @@ app.get("/HowToPlayPage", function(req, res) {
 app.get("/TestsPage", function(req, res) {
   res.sendFile(__dirname + "/ConnectFourOnlineTestsPage.html")
 })
+
+// Adding all CSS files.
+app.get("/ConnectFourOnlineClient.css", function(req, res) {
+    res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
+});
+
+// Adding all JavaScript files.
+app.get("/ConnectFourOnlineClient.js", function(req, res) {
+    res.sendFile(__dirname + "/ConnectFourOnlineClient.js");
+});
+app.get("/ConnectFourOnlineTests.js", function(req, res) {
+    res.sendFile(__dirname + "/ConnectFourOnlineTests.js");
+});
+
+// Adding all QUnit dependencies.
+app.get("/qunit-2.4.0.js", function(req, res) {
+  res.sendFile(__dirname + "/qunit-2.4.0.js")
+});
+app.get("/qunit-2.4.0.css", function(req, res) {
+    res.sendFile(__dirname + "/qunit-2.4.0.css");
+});
+
+// Adding all external resources.
+app.get("/Images/WhiteBackground.png", function(req, res) {
+  res.sendFile(__dirname + "/Images/WhiteBackground.png")
+});
+app.get("/Images/GreyBackground.png", function(req, res) {
+  res.sendFile(__dirname + "/Images/GreyBackground.png")
+});
+
+
 
 // SocketIO functions.
 io.on("connection", function(socket){
