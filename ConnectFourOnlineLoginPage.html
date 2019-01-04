@@ -29,6 +29,9 @@
     <!-- QUnit dependencies. -->
     <link rel="stylesheet" href="qunit-2.4.0.css">
 
+    <!-- PouchDB dependencies. -->
+    <script src="pouchdb-7.0.0.min.js"></script>
+
 </head>
 
 <body>
@@ -78,6 +81,7 @@
         </div>
     </div>
 
+    <!-- Three point introduction material. -->
     <div class="container" id="startPageMainContentContainer">
         <div class="row">
             <div class="col-md-4">
@@ -108,7 +112,16 @@
                         <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login</h5>
                     </div>
                     <div class="modal-body">
-                      This is the login section.
+                        <form>
+                            <div class="form-group">
+                                <label for="loginUsername">Enter your Username</label>
+                                <input type="text" class="form-control" id="loginUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password here...">
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="btn btn-lg btn-primary" onclick="validateLoginDetails()">Login <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -128,10 +141,23 @@
                         <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration</h5>
                     </div>
                     <div class="modal-body">
-                        This is the registration section.
+                        <form>
+                            <div class="form-group">
+                                <label for="registrationUsername">Choose a Username</label>
+                                <input type="text" class="form-control" id="registrationUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="registrationEmail">Email Address</label>
+                                <input type="email" class="form-control" id="registrationEmail" placeholder="Enter your email here...">
+                            </div>
+                            <div class="form-group">
+                                <label for="registrationPassword">Password</label>
+                                <input type="password" class="form-control" id="registrationPassword" placeholder="Enter your password here...">
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-lg btn-primary" onclick="registerLoginDetails()">Register <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a href="#" class="btn btn-lg btn-primary" id="registrationModalRegisterButton" onclick="registerLoginDetails()">Register <span class="glyphicon glyphicon-chevron-right"></span></a>
                         <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                 </div>
@@ -139,7 +165,7 @@
         </div>
     </div>
 
-    <!-- Testing modal -->
+    <!-- Testing modal. -->
     <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -157,6 +183,87 @@
         </div>
     </div>
 
+    <!-- Successful login modal. -->
+    <div class="modal fade" id="successfulLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login Successful!</h5>
+                        </div>
+                        <div class="modal-body">
+                            Click Okay to continue...
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="goToHomePage()">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Unsuccessful login modal. -->
+    <div class="modal fade" id="unsuccessfulLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login Unuccessful!</h5>
+                    </div>
+                    <div class="modal-body">
+                        No user exists with that Username.
+
+                        Press Okay to try again...
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Successful registration modal. -->
+    <div class="modal fade" id="successfulRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration Successful!</h5>
+                        </div>
+                        <div class="modal-body">
+                            Please login with the details you provided.
+
+                            Press Okay to continue...
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Unsuccessful registration modal. -->
+    <div class="modal fade" id="unsuccessfulRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration Unuccessful!</h5>
+                    </div>
+                    <div class="modal-body">
+                        A user already exists with that username.
+
+                        Press Okay to try again...
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

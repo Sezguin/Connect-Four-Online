@@ -1,10 +1,14 @@
 var express = require('express')
 var http = require('http');
+var PouchDB = require('pouchdb');
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var port = 3000;
+
 var mainPage = "/"
+var userDatabase = new PouchDB("Users");
+var remoteCouch = false;
 
 // Adding all HTML files.
 app.get("/LoginPage", function(req, res) {
@@ -16,9 +20,6 @@ app.get("/HomePage", function(req, res) {
 app.get("/HowToPlayPage", function(req, res) {
     res.sendFile(__dirname + "/ConnectFourOnlineHowToPlayPage.html");
 });
-app.get("/TestsPage", function(req, res) {
-  res.sendFile(__dirname + "/ConnectFourOnlineTestsPage.html")
-})
 
 // Adding all CSS files.
 app.get("/ConnectFourOnlineClient.css", function(req, res) {
@@ -41,6 +42,11 @@ app.get("/qunit-2.4.0.css", function(req, res) {
     res.sendFile(__dirname + "/qunit-2.4.0.css");
 });
 
+// Adding all PouchDB dependencies.
+app.get("/pouchdb-7.0.0.min.js", function(req, res) {
+    res.sendFile(__dirname + "/pouchdb-7.0.0.min.js");
+});
+
 // Adding all external resources.
 app.get("/Images/WhiteBackground.png", function(req, res) {
   res.sendFile(__dirname + "/Images/WhiteBackground.png")
@@ -48,8 +54,6 @@ app.get("/Images/WhiteBackground.png", function(req, res) {
 app.get("/Images/GreyBackground.png", function(req, res) {
   res.sendFile(__dirname + "/Images/GreyBackground.png")
 });
-
-
 
 // SocketIO functions.
 io.on("connection", function(socket){
@@ -62,7 +66,48 @@ io.on("connection", function(socket){
     socket.on("chat message", function(msg){
         io.emit("chat message", msg);
     });
+
+    socket.on("add user", function(msg) {
+        console.log(msg);
+
+        userDatabase.put(msg, function callback(err, result) {
+            if (!err) {
+                console.log("------------------- Successfully posted to database. -------------------");
+                showUserDatabaseInformation();
+                io.sockets.emit("postSuccessful");
+            } else {
+                console.log("------------------- The post to the database was unsuccessful, the user already exzists. -------------------");
+                io.sockets.emit("userExists");
+            }
+        });
+    });
+
+    socket.on("login user", function(msg) {
+        console.log(msg);
+        
+        var id = String(msg._id);
+        var username = msg.username;
+        var password = msg.password;
+
+        console.log(id, username, password);
+
+        var obj = userDatabase.get(id).then(function callback(err, result) {
+            console.log("------------------- User exists in the database. -------------------");
+            console.log(obj);
+            io.sockets.emit("correctUserLogin");
+        }).catch(function (err) {
+            console.log("------------------- User does not exists in the database. -------------------");
+            console.log(err);
+            io.sockets.emit("incorrectUserLogin");
+        });
+    });
 });
+
+function showUserDatabaseInformation() {
+    userDatabase.info().then(function (info) {
+        console.log(info);
+    });
+}
 
 server.listen(port, function(){
   console.log("Connect Four Online Server is listening on port: " + port);
