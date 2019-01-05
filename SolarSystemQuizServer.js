@@ -12,26 +12,26 @@ var remoteCouch = false;
 
 // Adding all HTML files.
 app.get("/LoginPage", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineLoginPage.html");
+    res.sendFile(__dirname + "/SolarSystemQuizLoginPage.html");
 });
 app.get("/HomePage", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineHomePage.html");
+    res.sendFile(__dirname + "/SolarSystemQuizHomePage.html");
 });
 app.get("/HowToPlayPage", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineHowToPlayPage.html");
+    res.sendFile(__dirname + "/SolarSystemQuizHowToPlayPage.html");
 });
 
 // Adding all CSS files.
-app.get("/ConnectFourOnlineClient.css", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineClient.css");
+app.get("/SolarSystemQuizClient.css", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizClient.css");
 });
 
 // Adding all JavaScript files.
-app.get("/ConnectFourOnlineClient.js", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineClient.js");
+app.get("/SolarSystemQuizClient.js", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizClient.js");
 });
-app.get("/ConnectFourOnlineTests.js", function(req, res) {
-    res.sendFile(__dirname + "/ConnectFourOnlineTests.js");
+app.get("/SolarSystemQuizTests.js", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizTests.js");
 });
 
 // Adding all QUnit dependencies.

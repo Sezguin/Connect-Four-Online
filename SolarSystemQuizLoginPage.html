@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Connect Four Online Login Page</title>
+    <title>Solar System Quiz Login Page</title>
 
     <!-- JQuery dependencies. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,8 +14,8 @@
         crossorigin="anonymous"></script>
 
     <!-- Custom client dependencies. -->
-    <script src="ConnectFourOnlineClient.js"></script>
-    <link rel="stylesheet" href="ConnectFourOnlineClient.css">
+    <script src="SolarSystemQuizClient.js"></script>
+    <link rel="stylesheet" href="SolarSystemQuizClient.css">
 
     <!-- Socket.io dependencies. -->
     <script src="/socket.io/socket.io.js"></script>
@@ -45,7 +45,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" onclick="goToLoginPage()">Connect Four Online</a>
+                <a class="navbar-brand" href="#" onclick="goToLoginPage()">Solar System Quiz</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -66,8 +66,8 @@
     <!-- Main title Jumbotron display. -->
     <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageTitleJumbotron">
         <div class="container">
-            <h1 id="startPageTitleText">Connect Four Online</h1>
-            <h1 id="startPageSubTitleText">The ultimate online gaming experience.<h1>
+            <h1 id="startPageTitleText">Solar System Quiz</h1>
+            <h1 id="startPageSubTitleText">How well do you know your planets?<h1>
         </div>
     </div>
 
@@ -86,13 +86,13 @@
         <div class="row">
             <div class="col-md-4">
                 <i class="material-icons">supervisor_account</i>
-                <h2>Connect With Friends</h2>
-                <p>With an easy to use interface, you can connect and challenge others to epic Connect Four Online games.</p>
+                <h2>Compare With Friends</h2>
+                <p>With an easy to use interface, you can compare with others to see who has the highest score.</p>
             </div>
             <div class="col-md-4">
                 <i class="material-icons">message</i>
                 <h2>Chat Online</h2>
-                <p>The integrated instant messenging service allows you to chat freely whilst playing your favourite game.</p>
+                <p>The integrated instant messenging service allows you to chat freely whilst playing your favourite quiz.</p>
             </div>
             <div class="col-md-4">
                 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
@@ -178,7 +178,7 @@
                 <div id="qunit-fixture"></div>
 
                 <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
-                <script src="/ConnectFourOnlineTests.js"></script>
+                <script src="/SolarSystemQuizTests.js"></script>
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
