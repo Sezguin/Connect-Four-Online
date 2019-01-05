@@ -54,6 +54,9 @@ app.get("/Images/WhiteBackground.png", function(req, res) {
 app.get("/Images/GreyBackground.png", function(req, res) {
   res.sendFile(__dirname + "/Images/GreyBackground.png")
 });
+app.get("/QuizQuestions.json", function(req, res) {
+    res.sendFile(__dirname + "/QuizQuestions.json");
+})
 
 // SocketIO functions.
 io.on("connection", function(socket){
@@ -83,22 +86,33 @@ io.on("connection", function(socket){
     });
 
     socket.on("login user", function(msg) {
-        console.log(msg);
-        
         var id = String(msg._id);
-        var username = msg.username;
-        var password = msg.password;
+        var username = msg.Username;
+        var password = msg.Password;
 
-        console.log(id, username, password);
+        console.log("Sent message: " + msg);
 
-        var obj = userDatabase.get(id).then(function callback(err, result) {
-            console.log("------------------- User exists in the database. -------------------");
-            console.log(obj);
-            io.sockets.emit("correctUserLogin");
-        }).catch(function (err) {
-            console.log("------------------- User does not exists in the database. -------------------");
-            console.log(err);
-            io.sockets.emit("incorrectUserLogin");
+        console.log("Sent ID = " + id);
+        console.log("Sent username = " + username);
+        console.log("Sent password = " + password);
+
+        userDatabase.get(id, function(err, doc) {
+            if(err) {
+                console.log(err);
+                console.log("------------------- User does not exists in the database. -------------------");
+                io.sockets.emit("incorrectUserLogin");
+            } else {
+                console.log(doc);
+                console.log("------------------- User exists in the database. -------------------");
+                console.log("********" + doc.Username + "  " + doc.Password);
+                if((doc.Username == username) && (doc.Password == password)) {
+                    console.log("------------------- Correct login information supplied. -------------------");
+                    io.sockets.emit("correctUserLogin");
+                } else {
+                    console.log("------------------- Incorrect login informaiton supplied -------------------");
+                    io.sockets.emit("incorrectPassword");
+                }                
+            }
         });
     });
 });
