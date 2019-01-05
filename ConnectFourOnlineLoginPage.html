@@ -45,7 +45,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Connect Four Online</a>
+                <a class="navbar-brand" href="#" onclick="goToLoginPage()">Connect Four Online</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -75,8 +75,8 @@
     <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageLoginAndRegisterJumbotron">
         <div class="container">
             <div id="loginAndRegisterDiv">
-                <button id="loginButton" data-toggle="modal" data-target="#loginModal">Login</button>
-                <button id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
+                <button class="bigMainButton" id="loginButton" data-toggle="modal" data-target="#loginModal">Login</button>
+                <button class="bigMainButton" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
             </div>
         </div>
     </div>
@@ -109,7 +109,7 @@
             <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login</h5>
+                        <h5 class="modalLargeTitle">Login</h5>
                     </div>
                     <div class="modal-body">
                         <form>
@@ -138,7 +138,7 @@
             <div class="modal-dialog registerAndLoginModalAlignmaentAdditional">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration</h5>
+                        <h5 class="modalLargeTitle">Registration</h5>
                     </div>
                     <div class="modal-body">
                         <form>
@@ -168,7 +168,10 @@
     <!-- Testing modal. -->
     <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modalLargeTitle">Registration</h5>
+                    </div>
+            <div class="modal-body">
 
                 <!-- QUnit Elements. -->
                 <div id="qunit"></div>
@@ -189,7 +192,7 @@
                 <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login Successful!</h5>
+                            <h5 class="modalLargeTitle">Login Successful!</h5>
                         </div>
                         <div class="modal-body">
                             Click Okay to continue...
@@ -208,7 +211,7 @@
             <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Login Unuccessful!</h5>
+                        <h5 class="modalLargeTitle">Login Unuccessful!</h5>
                     </div>
                     <div class="modal-body">
                         No user exists with that Username.
@@ -229,7 +232,7 @@
                 <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration Successful!</h5>
+                            <h5 class="modalLargeTitle">Registration Successful!</h5>
                         </div>
                         <div class="modal-body">
                             Please login with the details you provided.
@@ -250,7 +253,7 @@
             <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loginAndRregistrationModalTitle">Registration Unuccessful!</h5>
+                        <h5 class="modalLargeTitle">Registration Unuccessful!</h5>
                     </div>
                     <div class="modal-body">
                         A user already exists with that username.

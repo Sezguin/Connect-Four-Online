@@ -32,6 +32,66 @@ form button {
     background: #eee;
 }
 
+/* Quiz style settings. */ 
+.slide {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.currentSlide {
+    opacity: 1;
+    z-index: 2;
+}
+
+.question {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.answers {
+    margin-bottom: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+.answers label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+button:hover {
+      background-color: #38a;
+}
+
+.quizContainer {
+    position: relative;
+    height: 200px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.quizButtons {
+    font-size: 22px;
+    background-color: rgb(148, 162, 168);
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    text-align: center;
+    width: 200px;
+    height: 50px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.quizButtons:hover {
+    background-color: rgb(131, 149, 163);
+}
+
 /* Start page style settings. */
 #startPageTitleJumbotron {
     animation-name: fadeInDown;
@@ -74,13 +134,22 @@ form button {
     font-size: 20px;
 }
 
+#homePageMainButtonsContainer {
+    width: 100%;
+    margin: 50px 0px;
+    text-align: center;
+    animation-name: zoomIn;
+    animation-duration: 4s;
+    font-size: 20px;
+}
+
 #loginAndRegisterDiv {
     text-align: center;
     animation-name: zoomIn;
     animation-duration: 3s
 }
 
-#loginButton {
+.bigMainButton {
     width: 350px;
     height: 100px;
     font-weight: 400;
@@ -97,32 +166,11 @@ form button {
     outline: none;
 }
 
-#loginButton:hover {
+.bigMainButton:hover {
     background-color: rgb(131, 149, 163);
 }
 
-#registerButton {
-    width: 350px;
-    height: 100px;
-    font-weight: 400;
-    font-size: 50px;
-    background-color: #A5BBCD;
-    border: none;
-    color: white;
-    padding: 15px 15px;
-    text-align: center;
-    border-width: 1px;
-    border-color: rgb(199, 199, 199);
-    border-radius: 10px;
-    margin: 20px;
-    outline: none;
-}
-
-#registerButton:hover {
-    background-color: rgb(131, 149, 163);
-}
-
-#loginAndRregistrationModalTitle {
+.modalLargeTitle {
     font-weight: 400;
     font-size: 40px;
     text-align: center;
