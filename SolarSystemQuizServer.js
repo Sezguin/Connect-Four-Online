@@ -1,6 +1,7 @@
 var express = require('express')
 var http = require('http');
 var PouchDB = require('pouchdb');
+PouchDB.plugin(require('pouchdb-find'));
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -19,6 +20,9 @@ app.get("/HomePage", function(req, res) {
 });
 app.get("/HowToPlayPage", function(req, res) {
     res.sendFile(__dirname + "/SolarSystemQuizHowToPlayPage.html");
+});
+app.get("/Leaderboard", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizLeaderboardPage.html");
 });
 
 // Adding all CSS files.
@@ -59,7 +63,7 @@ app.get("/QuizQuestions.json", function(req, res) {
 })
 
 // SocketIO functions.
-io.on("connection", function(socket){
+io.on("connection", function(socket) {
     console.log("A user has connected.");
 
     socket.on("disconnect", function(){
@@ -115,14 +119,175 @@ io.on("connection", function(socket){
             }
         });
     });
+
+    socket.on("set online", function(msg) {
+        console.log("Setting the online status of the user.");
+
+        var id = String(msg._id);
+        var online = msg.Online;
+
+        console.log("ID to update: " + id + " Online status is: " + online);
+
+        if (online) {
+            console.log("Setting " + id + " to be ONLINE.");
+
+            userDatabase.get(id, function(err, doc) {
+                if(err) {
+                    console.log("There was an error retrieving the document. See the output below:");
+                    console.log(err);
+                 } else {
+                    console.log("--- Retrieved Document ---");
+                    console.log("Revision: " + doc._rev);
+                    console.log("ID: " + doc._id);
+                    console.log("Name: " + doc.Username);
+                    console.log("Email: " + doc.Email);
+                    console.log("Password: " + doc.Password);
+                    console.log("Wins: " + doc.Wins);
+                    console.log("Online: " + doc.Online);
+                    console.log("--- Preparing New Document ---");
+
+                    doc = {
+                        _rev: doc._rev,
+                        _id: doc._id,
+                        Username: doc.Username,
+                        Email: doc.Email,
+                        Password: doc.Password,
+                        Wins: doc.Wins,
+                        Online: online, 
+                    };
+
+                    console.log("--- New Document ---");
+                    console.log("Revision: " + doc._rev);
+                    console.log("ID: " + doc._id);
+                    console.log("Name: " + doc.Username);
+                    console.log("Email: " + doc.Email);
+                    console.log("Password: " + doc.Password);
+                    console.log("Wins: " + doc.Wins);
+                    console.log("Online: " + doc.Online);
+
+                    userDatabase.put(doc, function(err, doc) {
+                        if(err) {
+                            console.log("There was an error inserting the document. See the output below:");
+                            console.log(err);
+                        } else {
+                            console.log("Online user document update was successful.");
+                            io.sockets.emit("user online success");
+                        }
+                    });
+                 }
+            });
+
+        } else if (!online) {
+            console.log("Setting " + id + " to be OFFINE.");
+
+            userDatabase.get(id, function(err, doc) {
+                if(err) {
+                    console.log("There was an error retrieving the document. See the output below:");
+                    console.log(err);
+                 } else {
+                    console.log("--- Retrieved Document ---");
+                    console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
+
+                    console.log("--- Preparing New Document ---");
+
+                    doc = {
+                        _rev: doc._rev,
+                        _id: doc._id,
+                        Username: doc.Username,
+                        Email: doc.Email,
+                        Password: doc.Password,
+                        Wins: doc.Wins,
+                        Online: online, 
+                    };
+
+                    console.log("--- New Document ---");
+                    console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
+
+                    userDatabase.put(doc, function(err, doc) {
+                        if(err) {
+                            console.log("There was an error inserting the document. See the output below:");
+                            console.log(err);
+                        } else {
+                            console.log("Offline user document update was successful.");
+                            io.sockets.emit("user offline success");
+                        }
+                    });
+                 }
+            });
+        }
+
+    });
+
+    socket.on("delete database", function() {
+        console.log("Attempting to delete database...");
+        userDatabase.destroy(function(err) {
+            if(err) {
+                console.log("There was an error when trying to delete the database. See below: ");
+                console.log(err);
+                io.sockets.emit("deleteUnsuccessful");
+            } else {
+                console.log("Database has been deleted successfully. Please restart the server.");
+                io.sockets.emit("deleteSuccessful");
+            }
+        });
+    });
+
+    socket.on("fetch user wins", function() {
+        console.log("Fetching list of user wins.");
+        
+        userDatabase.allDocs({
+            include_docs: true
+        }).then(function(result) {
+            var databaseOfUsers = result.rows;
+            console.log("Specifics: " + result.rows.doc);
+            console.log("The user wins list is: " + JSON.stringify(databaseOfUsers));
+
+            for(var i = 0; i < databaseOfUsers.length; i++) {
+                let username = databaseOfUsers[i].doc.Username;
+                let wins = databaseOfUsers[i].doc.Wins;
+
+                if(username != null) {
+                    console.log("Username from win search: " + JSON.stringify(username));
+                    console.log("Wins from win search: " + JSON.stringify(wins));
+                    io.sockets.emit("user wins list", username, wins);
+                }
+            } 
+        }).catch(function(err) {
+            console.log("There was an error retrieving all documents from the database. See ouput below:");
+            console.log(err);
+        })
+    });
+
+    socket.on("fetch online users", function() {
+
+        console.log("Fetching list of online users.");
+        
+        userDatabase.createIndex({
+            index: {
+                fields: ["Online"],
+                ddoc: "userOnlineIndex"
+            }
+        }).then(function() {
+            return userDatabase.find({
+            selector: {
+                Online: true,
+            },
+            user_index: "userOnlineIndex"
+        }).then(function(result) {
+                var onlineUsers = result.docs;
+                console.log("The online users are: " + JSON.stringify(onlineUsers));
+                io.sockets.emit("online user list", onlineUsers);
+            });
+        });   
+    });
 });
 
 function showUserDatabaseInformation() {
-    userDatabase.info().then(function (info) {
+    userDatabase.info().then(function(info) {
         console.log(info);
     });
 }
 
 server.listen(port, function(){
-  console.log("Connect Four Online Server is listening on port: " + port);
+  console.log("Solar System Quiz server is listening on port: " + port);
 });

@@ -6,6 +6,7 @@
         "bootstrap": "^3.3.7",
         "express": "^4.15.2",
         "pouchdb": "^7.0.0",
+        "pouchdb-find": "^7.0.0",
         "socket.io": "^2.2.0"
     }
 }

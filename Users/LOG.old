@@ -1,5 +1,14 @@
-2019/01/05-18:49:33.698 4a64 Recovering log #217
-2019/01/05-18:49:33.698 4a64 Level-0 table #219: started
-2019/01/05-18:49:33.705 4a64 Level-0 table #219: 592 bytes OK
-2019/01/05-18:49:33.710 4a64 Delete type=0 #217
-2019/01/05-18:49:33.710 4a64 Delete type=3 #215
+2019/01/06-19:09:50.391 4ae8 Recovering log #194
+2019/01/06-19:09:50.391 4ae8 Level-0 table #196: started
+2019/01/06-19:09:50.395 4ae8 Level-0 table #196: 4604 bytes OK
+2019/01/06-19:09:50.401 4ae8 Delete type=0 #194
+2019/01/06-19:09:50.401 4ae8 Delete type=3 #192
+2019/01/06-19:09:50.401 4aac Compacting 4@0 + 1@1 files
+2019/01/06-19:09:50.404 4aac Generated table #198@0: 114 keys, 11736 bytes
+2019/01/06-19:09:50.404 4aac Compacted 4@0 + 1@1 files => 11736 bytes
+2019/01/06-19:09:50.405 4aac compacted to: files[ 0 1 0 0 0 0 0 ]
+2019/01/06-19:09:50.405 4aac Delete type=2 #185
+2019/01/06-19:09:50.405 4aac Delete type=2 #187
+2019/01/06-19:09:50.405 4aac Delete type=2 #190
+2019/01/06-19:09:50.405 4aac Delete type=2 #193
+2019/01/06-19:09:50.406 4aac Delete type=2 #196

@@ -110,6 +110,15 @@ button:hover {
     background-repeat: repeat;
 }
 
+#leaderboardTableJumbotron {
+    animation-name: fadeInUp;
+    animation-duration: 2s;
+    margin: 0px;
+    padding: 60px;
+    background-image: url("Images/WhiteBackground.png");
+    background-repeat: repeat;
+}
+
 #startPageTitleText {
     text-align: center;
     font-size: 100px;

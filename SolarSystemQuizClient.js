@@ -1,6 +1,123 @@
 window.onload = function() {
-    console.log("Window loaded.");
-    document.getElementById("welcomeHeader").innerHTML = "Welcome, " + localStorage.getItem("Username");
+    title = $(document).find("title").text();    
+    console.log("Active page: " + title);
+    checkOnline();
+    updateOnlineUserList();
+}
+
+function updateLeaderboards() {
+    console.log("Updating leaderboards.");
+
+    var socket = io();
+
+    socket.emit("fetch user wins");
+
+    socket.on("user wins list", function(username, wins) {
+
+        console.log("User: + " + username + " wins are: " + wins);
+    
+        let tableUsername = username;
+        let tableWins = wins;
+
+        console.log("Table username: " + tableUsername);
+        console.log("Table wins: " + tableWins);
+
+        var row = $("<tr>");
+        row.append($("<td>" + tableUsername + "</td><td>" + tableWins + "</td>"));
+        $("#leaderboardsTable").append(row);
+
+    });
+}
+
+function addRow() {
+    var moduleName = "346565343456";
+    var moduleWeight = "345643565436";
+
+    console.log("Console name: " + moduleName);
+    console.log("Console weight: " + moduleWeight);
+
+    var table = document.getElementById("gradeTable");
+    var row = table.insertRow(table.rows.length);
+
+    var cell1 = row.insertCell(0);
+    var t1 = document.createElement("text");
+    t1.value = moduleName;
+    cell1.appendChild(t1);
+
+    var cell2 = row.insertCell(1);
+    var t2 = document.createElement("text");
+    t2.value = moduleWeight;
+    cell2.appendChild(t2);
+}
+
+function updateOnlineUserList() {
+    console.log("Updating online user list...");
+
+    var socket = io();
+
+    socket.emit("fetch online users");
+
+    socket.on("online user list", function(msg) {
+        $("#onlineUsers").empty();
+        for(var i = 0; i < msg.length; i++) {
+            var element = msg[i].Username;
+            console.log("Username to be added to online list: " + JSON.stringify(element));            
+            $("#onlineUsers").append($(`<li class="list-group-item d-flex justify-content-between align-items-center">`).text(element));
+        }       
+    });
+}
+
+function logoutUser() {
+    var username = localStorage.getItem("Username");
+    setOnlineStatus(false, username);
+
+    localStorage.removeItem("Username");
+
+    console.log("Username reset and current user has been logged out.");
+    $("#logoutModal").modal("show");
+    $("#logoutModal").on("hidden.bs.modal", function() {
+        goToLoginPage();
+    });
+}
+
+function checkOnline() {
+    var username = localStorage.getItem("Username");
+    if (navigator.onLine === true) {
+        console.log("A user is online.")
+        if (localStorage.getItem("Username") == null) {
+            console.log("User is not logged in yet.");
+        } else {
+            console.log("User is logged in as: " + username);
+            if (document.getElementById("welcomeHeader") != null) {
+                document.getElementById("welcomeHeader").innerHTML = "Welcome, " + username;
+            }
+
+            setOnlineStatus(true, username);
+        }
+    } else {
+        console.log("No user is online.")
+    }
+}
+
+function setOnlineStatus(isOnline, username) {
+
+    var socket = io();
+    var userOnline = {
+        _id: String(username),
+        Online: isOnline,
+    };
+    
+    console.log("Is the user online: " + isOnline + " Username: " + username);
+
+    socket.emit("set online", userOnline);
+
+    socket.on("user online success", function() {
+        console.log(username + " is now ONLINE.");
+    });
+
+    socket.on("user offline success", function() {
+        console.log(username + " is now OFFLINE.");
+    });
 }
 
 $("startQuizButton").click(function() {
@@ -213,6 +330,7 @@ function insertDataIntoDatabase(username, email, password) {
         Username: username,
         Email: email,
         Password: password,
+        Online: false,
         Wins: 0
     };
     
@@ -227,6 +345,31 @@ function insertDataIntoDatabase(username, email, password) {
         $("#registerModal").modal("hide");
         $("#registerModal").find(".modal-body").append("\nA user with the name of: " + "<h4>" + username + "</h4> already exists. Please try again.");
     });
+}
+
+function deleteDatabase() {
+    console.log("Cleint is attempting to delete the database...");
+    var socket = io();
+    socket.emit("delete database");
+
+    socket.on("deleteSuccessful", function() {
+        console.log("-------------------------------------------------");
+        console.log("Database was deleted successfully. Please restart your server and browser to continue.");
+        console.log("-------------------------------------------------");
+    });
+
+    socket.on("deleteUnsuccessful", function() {
+        console.log("-------------------------------------------------");
+        console.log("The database was not deleted due to an error. Please restart your server and browser and try again.");
+        console.log("-------------------------------------------------");
+    });
+}
+
+function goToLeaderboardPage() {
+    console.log("BEFORE");
+    window.location.href = "/Leaderboard";
+    console.log("AFTER");
+    updateLeaderboards();
 }
 
 function goToHomePage() {
