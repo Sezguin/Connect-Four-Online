@@ -110,6 +110,16 @@ button:hover {
     background-repeat: repeat;
 }
 
+#leaderboardTableJumbotronButton {
+    animation-name: fadeInUp;
+    animation-duration: 3s;
+    margin: 0px;
+    padding: 60px;
+    background-image: url("Images/WhiteBackground.png");
+    background-repeat: repeat;
+    text-align: center;
+}
+
 #leaderboardTableJumbotron {
     animation-name: fadeInUp;
     animation-duration: 2s;
@@ -141,6 +151,19 @@ button:hover {
     animation-name: zoomIn;
     animation-duration: 4s;
     font-size: 20px;
+}
+
+#howToPlayContainer {
+    width: 100%;
+    margin: 50px 0px;
+    text-align: center;
+    animation-name: zoomIn;
+    animation-duration: 4s;
+    font-size: 20px;
+}
+
+#centeringContainer {
+    text-align: left;
 }
 
 #homePageMainButtonsContainer {

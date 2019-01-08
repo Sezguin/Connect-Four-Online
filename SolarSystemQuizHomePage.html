@@ -25,9 +25,6 @@
         <!-- Custom icons. -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        <!-- QUnit dependencies. -->
-        <link rel="stylesheet" href="qunit-2.4.0.css">
-
     </head>
     <body>
         <!-- Top home page navigation bar. -->
@@ -40,19 +37,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#" onclick="logoutUser()">Solar System Quiz</a>
+                    <a class="navbar-brand" href="#" onclick="goToHomePage()">Solar System Quiz</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                      <li><a href="#" data-toggle="modal" data-target="#testingModal">Tests</a></li>
-                        <li><a href="#">How To Play</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" onclick="goToProfilePage()">Profile</a></li>
-                                <li><a href="#" onclick="logoutUser()">Logout</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#" onclick="goToHowToPlayPage()">How To Play</a></li>
+                        <li><a href="#" onclick="logoutUser()">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,20 +55,10 @@
         </div>
 
         <div id="homePageMainButtonsContainer">
-            <ul class="list-group" id="onlineUsers">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  Cras justo odio
-                  <span class="badge badge-primary badge-pill">14</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  Dapibus ac facilisis in
-                  <span class="badge badge-primary badge-pill">2</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  Morbi leo risus
-                  <span class="badge badge-primary badge-pill">1</span>
-                </li>
-              </ul>
+            <h3>Online Users</h3>
+            <div class="container">
+                    <ul class="list-group" id="onlineUsers"></ul>
+            </div>
         </div>
 
         <div class="chat-popup" id="chatWindow">
@@ -93,8 +73,7 @@
         </div>
 
         <nav class="navbar navbar-inverse navbar-fixed-bottom" id="homePageNavigationBarBottom">
-            <a href="#" class="btn btn-default pull-right" onclick="openChatWindow()" id="bottomNavigationButton">Open Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_up</span></a>
-            <a href="#" class="btn btn-default pull-right" onclick="closeChatWindow()" id="bottomNavigationButton">Close Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_down</span></a>
+            <a href="#" class="btn btn-default pull-right" onclick="openChatWindow()" id="bottomNavigationButton">Toggle Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_up</span></a>
         </nav>
 
     <!-- Modals. -->
@@ -125,18 +104,38 @@
                             <h5 class="modalLargeTitle" id="quizGameTitle">Quiz</h5>
                         </div>
                         <div class="modal-body">
-                                <div class="quizContainer">
-                                        <div id="mainQuizContent"></div>
-                                            <!-- All quiz content gets updated to here via JavaScript. -->
-                                        </div>
-                        
-                                        <button class="quizButtons" id="previousQuestion">Previous</button>
-                                        <button class="quizButtons" id="nextQuestion">Next</button>
-                                <div id="results"></div>
+                            <div class="quizContainer">
+                                <div id="mainQuizContent"></div>
+                                    <!-- All quiz content gets updated to here via JavaScript. -->
+                                </div>
+                
+                                <button class="quizButtons" id="previousQuestion">Previous</button>
+                                <button class="quizButtons" id="nextQuestion">Next</button>
+                            <div id="results"></div>
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Quit <span class="glyphicon glyphicon-remove"></span></a>
                             <a href="#" class="btn btn-lg btn-primary" id="submitQuizAnswers"">Submit <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Win modal. -->
+        <div class="modal fade bd-example-modal-lg" id="winModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modalLargeTitle" id="quizGameTitle">You won!</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Congratulations!</h3><p></p>
+                            <h4>You have been awarded a win for your efforts.</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Quit <span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                     </div>
                 </div>

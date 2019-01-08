@@ -8,13 +8,15 @@ window.onload = function() {
 function updateLeaderboards() {
     console.log("Updating leaderboards.");
 
+    $('#leaderboardsTable tbody').empty();
+
     var socket = io();
 
     socket.emit("fetch user wins");
 
     socket.on("user wins list", function(username, wins) {
 
-        console.log("User: + " + username + " wins are: " + wins);
+        console.log("User: " + username + " wins are: " + wins);
     
         let tableUsername = username;
         let tableWins = wins;
@@ -26,28 +28,36 @@ function updateLeaderboards() {
         row.append($("<td>" + tableUsername + "</td><td>" + tableWins + "</td>"));
         $("#leaderboardsTable").append(row);
 
+        sortTable();
+
     });
 }
 
-function addRow() {
-    var moduleName = "346565343456";
-    var moduleWeight = "345643565436";
+function sortTable() {
+    console.log("Sorting table into order of wins.");
 
-    console.log("Console name: " + moduleName);
-    console.log("Console weight: " + moduleWeight);
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("leaderboardsTable");
+    switching = true;
 
-    var table = document.getElementById("gradeTable");
-    var row = table.insertRow(table.rows.length);
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[1];
+            y = rows[i + 1].getElementsByTagName("TD")[1];
 
-    var cell1 = row.insertCell(0);
-    var t1 = document.createElement("text");
-    t1.value = moduleName;
-    cell1.appendChild(t1);
-
-    var cell2 = row.insertCell(1);
-    var t2 = document.createElement("text");
-    t2.value = moduleWeight;
-    cell2.appendChild(t2);
+            if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
 }
 
 function updateOnlineUserList() {
@@ -132,38 +142,105 @@ function runQuiz() {
 
     const questionList = [
         {
-        question: "What is 2 x 4?",
-        answers: {
-            a: "3",
-            b: "6",
-            c: "8"
+            question: "What is the largest planet is our solar system?",
+            answers: {
+                a: "Mars",
+                b: "Saturn",
+                c: "Jupiter"
+            },
+            correctAnswer: "c"
         },
+        {
+        question: "What is the hottest planet in the solar system?",
+            answers: {
+                a: "Venus",
+                b: "Mercury",
+                c: "Neptune"
+            },
+            correctAnswer: "a"
+        },
+        {
+        question: "Which of these is a moon of Saturn?",
+            answers: {
+                a: "Ganymede",
+                b: "Europa",
+                c: "Enceladus",
+            },
         correctAnswer: "c"
         },
         {
-        question: "What is 7 x 2?",
-        answers: {
-            a: "14",
-            b: "4",
-            c: "46"
+        question: "Which moon has the most water on?",
+            answers: {
+                a: "Titan",
+                b: "Ganymede",
+                c: "Dione",
+            },
+        correctAnswer: "b"
         },
+        {
+        question: "Which planet has the most moons?",
+            answers: {
+                a: "Earth",
+                b: "Jupiter",
+                c: "Saturn",
+            },
+        correctAnswer: "b"
+        },
+        {
+        question: "Which planet is the coldest?",
+            answers: {
+                a: "Pluto",
+                b: "Uranus",
+                c: "Neptune",
+            },
+        correctAnswer: "c"
+        },
+        {
+        question: "How many planets are the in the solar system?",
+            answers: {
+                a: "8",
+                b: "9",
+                c: "10",
+            },
         correctAnswer: "a"
         },
         {
-        question: "What is 3 x 5?",
-        answers: {
-            a: "20",
-            b: "35",
-            c: "15",
+        question: "How far is Earth from the Sun?",
+            answers: {
+                a: "About 120 million kilometers.",
+                b: "About 150 million kilometers.",
+                c: "About 200 million kilometers.",
+            },
+        correctAnswer: "b"
         },
+        {
+        question: "Why is Pluto not a planet?",
+            answers: {
+                a: "It smells too awful.",
+                b: "It's too small.",
+                c: "It's too far away.",
+            },
+        correctAnswer: "b"
+        },
+        {
+        question: "What planet has life on it?",
+            answers: {
+                a: "The Moon",
+                b: "Mars",
+                c: "Earth",
+            },
         correctAnswer: "c"
-        }
+        }        
     ];
     
     function showResults() {
 
         var answerContainers = quizContainer.querySelectorAll(".answers");
         var correctAnswers = 0;
+
+        var socket = io();
+        var user = String(localStorage.getItem("Username"));
+        console.log("Updating results for user: " + user);
 
         questionList.forEach((currentQuestion, questionNumber) => {
             var answerContainer = answerContainers[questionNumber];
@@ -178,7 +255,26 @@ function runQuiz() {
             }
         });
 
-        resultsContainer.innerHTML = "You got " + correctAnswers + " out of " + questionList.length + " answers correct.";
+        if (correctAnswers == 10) {
+            console.log("The user got all 10 questions right, the has a win!");
+            resultsContainer.innerHTML = "You got all the questions right! You have been awarded a win for you efforts.";
+            $("#startQuizModal").modal("hide");
+            $("#winModal").modal("show");
+
+            socket.emit("set wins", user);
+
+        } else {
+            console.log("User got some questions wrong...");
+            resultsContainer.innerHTML = "You got " + correctAnswers + " out of " + questionList.length + " answers correct.";
+        }
+
+        socket.on("user wins success", function() {
+            console.log("The user wins were upodated successfully.");
+        });
+
+        socket.on("user wins fail", function() {
+            console.log("There was an error when updating the user wins.");
+        });
     }
     
     function changeQuestion(n) {
@@ -258,11 +354,7 @@ function runQuiz() {
 }
 
 function openChatWindow() {
-    document.getElementById("chatWindow").style.display = "block";
-}
-
-function closeChatWindow() {
-    document.getElementById("chatWindow").style.display = "none";
+    $("#chatWindow").slideToggle("slow");
 }
 
 $(function () {
@@ -274,7 +366,7 @@ $(function () {
     });
 
     socket.on("chat message", function (msg) {
-        $("#chatWindowMessageHistory").append($("<li>").text(localStorage.getItem("Username") + msg));
+        $("#chatWindowMessageHistory").append($("<li>").text(localStorage.getItem("Username") + ": " + msg));
     });
 });
 
@@ -289,11 +381,9 @@ function validateLoginDetails() {
 function checkDatabaseLoginDetails(username, password) {
     console.log("Entered check login details.")
     var socket = io();
-    var User = {
-        _id: String(username),
-        Username: username,
-        Password: password,
-    };
+    var User = factory.create("loginUser", username, password);
+
+    console.log("Returned login user: " + JSON.stringify(User));
 
     socket.emit("login user", User);
 
@@ -305,14 +395,19 @@ function checkDatabaseLoginDetails(username, password) {
     });
 
     socket.on("incorrectUserLogin", function() {
-        $("#loginModal").modal("hide");
-        $("#unsuccessfulLoginModal").modal("show");
+   
+        $("#loginInformationLabel").empty();
+        $("#loginInformationLabel").css("color", "RED");
+        $("#loginInformationLabel").append("\nUser does not exist.");
     });
 
     socket.on("incorrectPassword", function() {
         console.log("Incorrect password has been entered.");
-        $("#loginModal").find(".modal-body").append("\nIncorrect password entered for: " + "<h4>" + username + "</h4>" + "Please try again.");
-    })
+
+        $("#loginInformationLabel").empty();
+        $("#loginInformationLabel").css("color", "RED");
+        $("#loginInformationLabel").append("\nIncorrect password.");
+    });
 }
 
 function registerLoginDetails() {
@@ -321,18 +416,16 @@ function registerLoginDetails() {
     var localPassword = document.getElementById("registrationPassword").value;
 
     insertDataIntoDatabase(localUsername, localEmail, localPassword);
+
 }
+
 
 function insertDataIntoDatabase(username, email, password) {
     var socket = io();
-    var User = {
-        _id: String(username),
-        Username: username,
-        Email: email,
-        Password: password,
-        Online: false,
-        Wins: 0
-    };
+
+    var User = factory.create("registerUser", username, password, email)
+
+    console.log("User details: " + User);
     
     socket.emit("add user", User);
 
@@ -341,11 +434,41 @@ function insertDataIntoDatabase(username, email, password) {
         $("#successfulRegistrationModal").modal("show");
     });
 
-    socket.on("userExists", function() {
-        $("#registerModal").modal("hide");
-        $("#registerModal").find(".modal-body").append("\nA user with the name of: " + "<h4>" + username + "</h4> already exists. Please try again.");
+    socket.on("userExists", function() {        
+        $("#registerInformationLabel").empty();
+        $("#registerInformationLabel").css("color", "RED");
+        $("#registerInformationLabel").append("\nA user already exists with that name.");
     });
 }
+
+factory = {
+    create: function (product, username, password, email) {
+        console.log("Factory method entered.")
+        var user;
+
+        if (product == "registerUser") {
+            user = {
+                _id: String(username),
+                Username: username,
+                Email: email,
+                Password: password,
+                Online: false,
+                Wins: 0
+            }
+        } else if (product == "loginUser") {
+            user = {
+                _id: String(username),
+                Username: username,
+                Password: password,
+            }
+        } else {
+            console.log("No object type specified for factory.");
+        }
+
+        return user;
+    }
+}
+
 
 function deleteDatabase() {
     console.log("Cleint is attempting to delete the database...");
@@ -365,11 +488,12 @@ function deleteDatabase() {
     });
 }
 
+function goToTestingPage() {
+    window.location.href = "/TestingPage"
+}
+
 function goToLeaderboardPage() {
-    console.log("BEFORE");
     window.location.href = "/Leaderboard";
-    console.log("AFTER");
-    updateLeaderboards();
 }
 
 function goToHomePage() {
@@ -382,8 +506,4 @@ function goToHowToPlayPage() {
 
 function goToLoginPage() {
     window.location.href = "/LoginPage";
-}
-
-function goToProfilePage() {
-    window.location.href = "/ProfilePage";
 }

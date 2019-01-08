@@ -24,6 +24,9 @@ app.get("/HowToPlayPage", function(req, res) {
 app.get("/Leaderboard", function(req, res) {
     res.sendFile(__dirname + "/SolarSystemQuizLeaderboardPage.html");
 });
+app.get("/TestingPage", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizTestingPage.html");
+});
 
 // Adding all CSS files.
 app.get("/SolarSystemQuizClient.css", function(req, res) {
@@ -33,6 +36,9 @@ app.get("/SolarSystemQuizClient.css", function(req, res) {
 // Adding all JavaScript files.
 app.get("/SolarSystemQuizClient.js", function(req, res) {
     res.sendFile(__dirname + "/SolarSystemQuizClient.js");
+});
+app.get("/SolarSystemQuizLoginPageTests.js", function(req, res) {
+    res.sendFile(__dirname + "/SolarSystemQuizLoginPageTests.js");
 });
 app.get("/SolarSystemQuizTests.js", function(req, res) {
     res.sendFile(__dirname + "/SolarSystemQuizTests.js");
@@ -81,10 +87,10 @@ io.on("connection", function(socket) {
             if (!err) {
                 console.log("------------------- Successfully posted to database. -------------------");
                 showUserDatabaseInformation();
-                io.sockets.emit("postSuccessful");
+                socket.emit("postSuccessful");
             } else {
                 console.log("------------------- The post to the database was unsuccessful, the user already exzists. -------------------");
-                io.sockets.emit("userExists");
+                socket.emit("userExists");
             }
         });
     });
@@ -104,17 +110,17 @@ io.on("connection", function(socket) {
             if(err) {
                 console.log(err);
                 console.log("------------------- User does not exists in the database. -------------------");
-                io.sockets.emit("incorrectUserLogin");
+                socket.emit("incorrectUserLogin");
             } else {
                 console.log(doc);
                 console.log("------------------- User exists in the database. -------------------");
                 console.log("********" + doc.Username + "  " + doc.Password);
                 if((doc.Username == username) && (doc.Password == password)) {
                     console.log("------------------- Correct login information supplied. -------------------");
-                    io.sockets.emit("correctUserLogin");
+                    socket.emit("correctUserLogin");
                 } else {
                     console.log("------------------- Incorrect login informaiton supplied -------------------");
-                    io.sockets.emit("incorrectPassword");
+                    socket.emit("incorrectPassword");
                 }                
             }
         });
@@ -137,15 +143,9 @@ io.on("connection", function(socket) {
                     console.log(err);
                  } else {
                     console.log("--- Retrieved Document ---");
-                    console.log("Revision: " + doc._rev);
-                    console.log("ID: " + doc._id);
-                    console.log("Name: " + doc.Username);
-                    console.log("Email: " + doc.Email);
-                    console.log("Password: " + doc.Password);
-                    console.log("Wins: " + doc.Wins);
-                    console.log("Online: " + doc.Online);
-                    console.log("--- Preparing New Document ---");
+                    console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
 
+                    console.log("--- Preparing New Document ---");
                     doc = {
                         _rev: doc._rev,
                         _id: doc._id,
@@ -157,13 +157,7 @@ io.on("connection", function(socket) {
                     };
 
                     console.log("--- New Document ---");
-                    console.log("Revision: " + doc._rev);
-                    console.log("ID: " + doc._id);
-                    console.log("Name: " + doc.Username);
-                    console.log("Email: " + doc.Email);
-                    console.log("Password: " + doc.Password);
-                    console.log("Wins: " + doc.Wins);
-                    console.log("Online: " + doc.Online);
+                    console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
 
                     userDatabase.put(doc, function(err, doc) {
                         if(err) {
@@ -171,7 +165,7 @@ io.on("connection", function(socket) {
                             console.log(err);
                         } else {
                             console.log("Online user document update was successful.");
-                            io.sockets.emit("user online success");
+                            socket.emit("user online success");
                         }
                     });
                  }
@@ -209,7 +203,7 @@ io.on("connection", function(socket) {
                             console.log(err);
                         } else {
                             console.log("Offline user document update was successful.");
-                            io.sockets.emit("user offline success");
+                            socket.emit("user offline success");
                         }
                     });
                  }
@@ -224,10 +218,10 @@ io.on("connection", function(socket) {
             if(err) {
                 console.log("There was an error when trying to delete the database. See below: ");
                 console.log(err);
-                io.sockets.emit("deleteUnsuccessful");
+                socket.emit("deleteUnsuccessful");
             } else {
                 console.log("Database has been deleted successfully. Please restart the server.");
-                io.sockets.emit("deleteSuccessful");
+                socket.emit("deleteSuccessful");
             }
         });
     });
@@ -249,7 +243,7 @@ io.on("connection", function(socket) {
                 if(username != null) {
                     console.log("Username from win search: " + JSON.stringify(username));
                     console.log("Wins from win search: " + JSON.stringify(wins));
-                    io.sockets.emit("user wins list", username, wins);
+                    socket.emit("user wins list", username, wins);
                 }
             } 
         }).catch(function(err) {
@@ -276,9 +270,60 @@ io.on("connection", function(socket) {
         }).then(function(result) {
                 var onlineUsers = result.docs;
                 console.log("The online users are: " + JSON.stringify(onlineUsers));
-                io.sockets.emit("online user list", onlineUsers);
+                socket.emit("online user list", onlineUsers);
             });
         });   
+    });
+
+    socket.on("set wins", function(msg) {
+        
+        console.log("Updating the wins of the user.")
+
+        var id = String(msg);
+
+        console.log("User ID to be updated: " + id);
+
+        userDatabase.get(id, function(err, doc) {
+            if(err) {
+                console.log("There was an error retrieving the document. See the output below:");
+                console.log(err);
+                } else {
+
+                var wins = doc.Wins;
+                console.log("Previous wins: " + wins);
+
+                wins++;
+                console.log("Updated wins: " + wins);
+
+                console.log("--- Retrieved Document ---");
+                console.log("Revision: " + doc._rev + "ID: " + doc._id + "Wins: " + doc.Wins);
+
+                console.log("--- Preparing New Document ---");
+                doc = {
+                    _rev: doc._rev,
+                    _id: doc._id,
+                    Username: doc.Username,
+                    Email: doc.Email,
+                    Password: doc.Password,
+                    Wins: wins,
+                    Online: doc.Online, 
+                };
+
+                console.log("--- New Document ---");
+                console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Wins);
+
+                userDatabase.put(doc, function(err, doc) {
+                    if(err) {
+                        console.log("There was an error inserting the document. See the output below:");
+                        console.log(err);
+                        socket.emit("user wins fail");
+                    } else {
+                        console.log("Updated user wins document update was successful.");
+                        socket.emit("user wins success");
+                    }
+                });
+            }
+        });
     });
 });
 

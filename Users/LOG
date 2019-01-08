@@ -1,9 +1,5 @@
-2019/01/06-19:31:34.733 2ae8 Recovering log #197
-2019/01/06-19:31:34.734 2ae8 Level-0 table #200: started
-2019/01/06-19:31:34.737 2ae8 Level-0 table #200: 113642 bytes OK
-2019/01/06-19:31:34.742 2ae8 Delete type=0 #197
-2019/01/06-19:31:34.743 2ae8 Delete type=3 #195
-2019/01/06-20:18:53.714 2220 Compacting 1@0 + 1@1 files
-2019/01/06-20:18:53.717 2220 Generated table #202@0: 156 keys, 17387 bytes
-2019/01/06-20:18:53.717 2220 Compacted 1@0 + 1@1 files => 17387 bytes
-2019/01/06-20:18:53.719 2220 compacted to: files[ 0 1 0 0 0 0 0 ]
+2019/01/08-19:46:04.594 5c8 Recovering log #233
+2019/01/08-19:46:04.594 5c8 Level-0 table #235: started
+2019/01/08-19:46:04.599 5c8 Level-0 table #235: 237 bytes OK
+2019/01/08-19:46:04.604 5c8 Delete type=0 #233
+2019/01/08-19:46:04.604 5c8 Delete type=3 #231

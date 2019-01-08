@@ -26,15 +26,9 @@
     <!-- Custom icons. -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <!-- QUnit dependencies. -->
-    <link rel="stylesheet" href="qunit-2.4.0.css">
-
-    <!-- PouchDB dependencies. -->
-    <script src="pouchdb-7.0.0.min.js"></script>
-
 </head>
 
-<body>
+<body onload="updateLeaderboards()">
     <!-- Top login page navigation bar. -->
     <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
@@ -45,24 +39,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" onclick="logoutUser()">Solar System Quiz</a>
+                <a class="navbar-brand" href="#" onclick="goToHomePage()">Solar System Quiz</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="logoutUser()">Logout</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Tools<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="deleteDatabase()">Delete Database</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" onclick="goToHowToPlayPage()">How To Play</a></li>
+                        <li><a href="#" onclick="logoutUser()">Logout</a></li>
+                    </ul>
+                </div>
         </div>
     </nav>
 
@@ -78,16 +62,19 @@
     <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="leaderboardTableJumbotron">
         <div class="container">
             <table id="leaderboardsTable" class="table table-striped myTable">
-                <th>Assessment</th>
-                <th>Weight</th>
-                <tr>
-                    <td>ISAD351T1</td>
-                    <td>15</td>
-                </tr>
-            </table>
-            <button onclick="updateLeaderboards()">Refresh</button>
+                <thead>
+                    <tr>
+                        <th>Username</th><th>Wins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>     
         </div>
     </div>
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="leaderboardTableJumbotronButton">
+        <button class="bigMainButton" onclick="updateLeaderboards()">Refresh</button>
+    </div>   
 
     <!-- Modals. -->
     <!-- Logout modal. -->

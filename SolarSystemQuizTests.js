@@ -1,13 +1,20 @@
-QUnit.test( "Test test.", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
+QUnit.test("Test test.", function(assert) {
+  assert.ok(1 == "1", "Passed!");
 });
 
-QUnit.module("LoginPage tests.");
-QUnit.test("Testing the LoginPage title is correct.", function(assert) {
-    assert.ok($(document).attr("title").indexOf("Solar System Quiz Login Page")!=-1,"Checking that the page title is: \"Solar System Quiz Login Page\".");
+QUnit.test("Test the factory function with register details.", function(assert) {
+
+    var result = factory.create("registerUser", "testUser", "testPassword", "testEmail");
+    assert.deepEqual(result, {_id: "testUser", Username: "testUser", Email:  "testEmail", Password: "testPassword", Online: false, Wins: 0})
 });
 
-QUnit.module("HomePage tests.");
-QUnit.test("Testing the HomePage title is correct.", function(assert) {
-    assert.ok($(document).attr("title").indexOf("Solar System Quiz Home Page")!=-1,"Checking that the page title is: \"Solar System Quiz Home Page\".");
+QUnit.test("Test the factory function with login details.", function(assert) {
+
+    var result = factory.create("loginUser", "testUser", "testPassword");
+    assert.deepEqual(result, {_id: "testUser", Username: "testUser", Password: "testPassword"})
 });
+
+QUnit.test("Testing title of the testing page is correct.", function(assert) {
+    assert.ok($(document).attr('title').indexOf("Solar System Quiz Tests Page")!=-1,"checking that the page title is Solar System Quiz Tests Page");
+});
+
