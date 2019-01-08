@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+
+<head>
+    <title id="pageTitle">Solar System Quiz Login Page</title>
+
+    <!-- JQuery dependencies. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap dependencies. -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!-- Custom client dependencies. -->
+    <script src="SolarSystemQuizClient.js"></script>
+    <link rel="stylesheet" href="SolarSystemQuizClient.css">
+
+    <!-- Socket.io dependencies. -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Custom fonts. -->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom icons. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- QUnit dependencies. -->
+    <link rel="stylesheet" href="qunit-2.4.0.css">
+
+    <!-- PouchDB dependencies. -->
+    <script src="pouchdb-7.0.0.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Top login page navigation bar. -->
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" onclick="goToLoginPage()">Solar System Quiz</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" data-toggle="modal" data-target="#testingModal"">Tests</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#registerModal"">Register</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Tools<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="deleteDatabase()">Delete Database</a></li>
+                            <li><a href="#" onclick="goToTestingPage()">Tests</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main title Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageTitleJumbotron">
+        <div class="container">
+            <h1 id="startPageTitleText">Solar System Quiz</h1>
+            <h1 id="startPageSubTitleText">How well do you know your planets?<h1>
+        </div>
+    </div>
+
+    <!-- Sub-text Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageLoginAndRegisterJumbotron">
+        <div class="container">
+            <div id="loginAndRegisterDiv">
+                <button class="bigMainButton" id="loginButton" data-toggle="modal" data-target="#loginModal">Login</button>
+                <button class="bigMainButton" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</Button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three point introduction material. -->
+    <div class="container" id="startPageMainContentContainer">
+        <div class="row">
+            <div class="col-md-4">
+                <i class="material-icons">supervisor_account</i>
+                <h2>Compare With Friends</h2>
+                <p>With an easy to use interface, you can compare with others to see who has the highest score.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="material-icons">message</i>
+                <h2>Chat Online</h2>
+                <p>The integrated instant messenging service allows you to chat freely whilst playing your favourite quiz.</p>
+            </div>
+            <div class="col-md-4">
+                <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+                <h2>Easy to Play</h2>
+                <p>Never played before? No problem! Check the 'How to Play' page for more information, or just jump straight in for a hands on approach.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Modals. -->
+    <!-- Login modal. -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modalLargeTitle">Login</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="loginUsername">Enter your Username</label>
+                                <input type="text" class="form-control" id="loginUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password here...">
+                            </div>
+                        </form>
+                        <h4 id=loginInformationLabel></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" id="submitLogin" onclick="validateLoginDetails()">Login <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a href="#" class="btn btn-lg btn-default" id="exitLogin" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration modal. -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmaentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modalLargeTitle">Registration</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="registrationUsername">Choose a Username</label>
+                                <input type="text" class="form-control" id="registrationUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="registrationEmail">Email Address</label>
+                                <input type="email" class="form-control" id="registrationEmail" placeholder="Enter your email here...">
+                            </div>
+                            <div class="form-group">
+                                <label for="registrationPassword">Password</label>
+                                <input type="password" class="form-control" id="registrationPassword" placeholder="Enter your password here...">
+                            </div>
+                        </form>
+                        <h4 id=registerInformationLabel></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" id="registrationModalRegisterButton" onclick="registerLoginDetails()">Register <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a href="#" class="btn btn-lg btn-default" id="exitRegister" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testing modal. -->
+    <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+                <div class="modal-header">
+                        <h5 class="modalLargeTitle">Registration</h5>
+                    </div>
+            <div class="modal-body">
+
+                <!-- QUnit Elements. -->
+                <div id="qunit"></div>
+                <div id="qunit-fixture"></div>
+
+                <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
+                <script src="/SolarSystemQuizLoginPageTests.js"></script>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Successful login modal. -->
+    <div class="modal fade" id="successfulLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modalLargeTitle">Login Successful!</h5>
+                    </div>
+                    <div class="modal-body">
+                        Click Okay to continue...
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="goToHomePage()">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Successful registration modal. -->
+    <div class="modal fade" id="successfulRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="registerAndLoginModalAlignment">
+            <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modalLargeTitle">Registration Successful!</h5>
+                    </div>
+                    <div class="modal-body">
+                        Please login with the details you provided.
+
+                        Press Okay to continue...
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-lg btn-primary" data-dismiss="modal">Okay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
