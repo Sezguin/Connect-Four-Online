@@ -359,14 +359,15 @@ function openChatWindow() {
 
 $(function () {
     var socket = io();
+    user = localStorage.getItem("Username");
     $("form").submit(function () {
-        socket.emit("chat message", $("#chatMessageToSend").val());
+        socket.emit("chat message", $("#chatMessageToSend").val(), user);
         $("#chatMessageToSend").val("");
         return false;
     });
 
-    socket.on("chat message", function (msg) {
-        $("#chatWindowMessageHistory").append($("<li>").text(localStorage.getItem("Username") + ": " + msg));
+    socket.on("chat message", function(msg, user) {
+        $("#chatWindowMessageHistory").append($("<li>").text(user + ": " + msg));
     });
 });
 
