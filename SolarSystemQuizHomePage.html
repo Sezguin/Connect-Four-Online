@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+    <head>
+        <title id="pageTitle">Connect Four Online Home Page</title>
+
+        <!-- JQuery dependencies. -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Bootstrap dependencies. -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+        <!-- Custom client dependencies. -->
+        <script src="SolarSystemQuizClient.js"></script>
+        <link rel="stylesheet" href="SolarSystemQuizClient.css">
+
+        <!-- Socket.io dependencies. -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <!-- Custom fonts. -->
+        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+        <!-- Custom icons. -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    </head>
+    <body>
+        <!-- Top home page navigation bar. -->
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" onclick="goToHomePage()">Solar System Quiz</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" onclick="goToHowToPlayPage()">How To Play</a></li>
+                        <li><a href="#" onclick="logoutUser()">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="homePageMainButtonsContainer">
+            <h1 id="welcomeHeader"></h1>
+            <button class="bigMainButton" data-toggle="modal" data-target="#startQuizModal" onclick="runQuiz()">Start Quiz</button>
+            <button class="bigMainButton" onclick="goToLeaderboardPage()">Leaderboard</button>
+        </div>
+
+        <div id="homePageMainButtonsContainer">
+            <h3>Online Users</h3>
+            <div class="container">
+                    <ul class="list-group" id="onlineUsers"></ul>
+            </div>
+        </div>
+
+        <div class="chat-popup" id="chatWindow">
+            <form class="chatWindowFormContainer">
+                <h1 id=chatWindowHeading>Chat</h1>
+                <ul id="chatWindowMessageHistory"></ul>
+                <form>
+                    <input id="chatMessageToSend" autocomplete="off" />
+                    <button class="btn btn-lg btn-primary" id="sendChatMessageButton">Send<span class="material-icons" id="smaller-material-icons">send</span>
+                </form>
+            </form>
+        </div>
+
+        <nav class="navbar navbar-inverse navbar-fixed-bottom" id="homePageNavigationBarBottom">
+            <a href="#" class="btn btn-default pull-right" onclick="openChatWindow()" id="bottomNavigationButton">Toggle Chat<span class="material-icons" id="smaller-material-icons">keyboard_arrow_up</span></a>
+        </nav>
+
+    <!-- Modals. -->
+        <!-- Testing modal -->
+        <div class="modal fade bd-example-modal-lg" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- QUnit Elements. -->
+                    <div id="qunit"></div>
+                    <div id="qunit-fixture"></div>
+
+                    <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
+                    <script src="/SolarSystemQuizTests.js"></script>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Exit <span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz modal. -->
+        <div class="modal fade bd-example-modal-lg" id="startQuizModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modalLargeTitle" id="quizGameTitle">Quiz</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="quizContainer">
+                                <div id="mainQuizContent"></div>
+                                    <!-- All quiz content gets updated to here via JavaScript. -->
+                                </div>
+                
+                                <button class="quizButtons" id="previousQuestion">Previous</button>
+                                <button class="quizButtons" id="nextQuestion">Next</button>
+                            <div id="results"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Quit <span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="#" class="btn btn-lg btn-primary" id="submitQuizAnswers"">Submit <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Win modal. -->
+        <div class="modal fade bd-example-modal-lg" id="winModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modalLargeTitle" id="quizGameTitle">You won!</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Congratulations!</h3><p></p>
+                            <h4>You have been awarded a win for your efforts.</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Quit <span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout modal. -->
+        <div class="modal fade bd-example-modal-lg" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="registerAndLoginModalAlignment">
+                <div class="modal-dialog registerAndLoginModalAlignmentAdditional">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modalLargeTitle">Goodbye!</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h2>You have successfully been logged out.</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-lg btn-default" data-dismiss="modal">Okay <span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

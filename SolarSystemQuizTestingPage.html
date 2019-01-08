@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+<head>
+    <title id="pageTitle">Solar System Quiz Tests Page</title>
+
+    <!-- JQuery dependencies. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap dependencies. -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!-- Custom client dependencies. -->
+    <script src="SolarSystemQuizClient.js"></script>
+    <link rel="stylesheet" href="SolarSystemQuizClient.css">
+
+    <!-- Socket.io dependencies. -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Custom fonts. -->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom icons. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- QUnit dependencies. -->
+    <link rel="stylesheet" href="qunit-2.4.0.css">
+
+</head>
+
+<body>
+    <!-- Top login page navigation bar. -->
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="goHome" onclick="goToLoginPage()">Solar System Quiz</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="goToLoginPage()">Home</a></li>
+                    <li><a href="#" onclick="goToTestingPage()">Tests</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main title Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageTitleJumbotron">
+        <div class="container">
+            <h1 id="startPageTitleText">Unit Tests</h1>
+        </div>
+    </div>
+
+    <!-- Sub-text Jumbotron display. -->
+    <div class="jumbotron jumbotron-fluid shadow-lg p-3 mb-5 bg-white rounded" id="startPageLoginAndRegisterJumbotron">
+        <div class="container">
+            <!-- QUnit Elements. -->
+            <div id="qunit"></div>
+            <div id="qunit-fixture"></div>
+
+            <script src="https://code.jquery.com/qunit/qunit-2.8.0.js"></script>
+            <script src="/SolarSystemQuizTests.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>
