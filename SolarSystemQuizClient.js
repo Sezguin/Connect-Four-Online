@@ -5,6 +5,7 @@ window.onload = function() {
     updateOnlineUserList();
 }
 
+// Refresh the leaderboard statistics.
 function updateLeaderboards() {
     console.log("Updating leaderboards.");
 
@@ -33,6 +34,7 @@ function updateLeaderboards() {
     });
 }
 
+// Custom function for ordering the table by most wins first.
 function sortTable() {
     console.log("Sorting table into order of wins.");
 
@@ -60,6 +62,7 @@ function sortTable() {
     }
 }
 
+// Update online users and add to container.
 function updateOnlineUserList() {
     console.log("Updating online user list...");
 
@@ -77,6 +80,7 @@ function updateOnlineUserList() {
     });
 }
 
+// Logout user - calls set online with false perameter.
 function logoutUser() {
     var username = localStorage.getItem("Username");
     setOnlineStatus(false, username);
@@ -90,6 +94,7 @@ function logoutUser() {
     });
 }
 
+// Generic function for checking online status.
 function checkOnline() {
     var username = localStorage.getItem("Username");
     if (navigator.onLine === true) {
@@ -109,6 +114,7 @@ function checkOnline() {
     }
 }
 
+// Generic functino to set the user's online status.
 function setOnlineStatus(isOnline, username) {
 
     var socket = io();
@@ -130,12 +136,14 @@ function setOnlineStatus(isOnline, username) {
     });
 }
 
+// Initial the quiz on the button press.
 $("startQuizButton").click(function() {
     console.log("Start quiz button clicked.");
     $("#startQuizModal").modal("show");
     runQuiz();
 });
 
+// Start running the quiz logic.
 function runQuiz() {
 
     console.log("Quiz has been run.");
@@ -233,6 +241,7 @@ function runQuiz() {
         }        
     ];
     
+    // Display results once the submit button is pressed.
     function showResults() {
 
         var answerContainers = quizContainer.querySelectorAll(".answers");
@@ -242,6 +251,7 @@ function runQuiz() {
         var user = String(localStorage.getItem("Username"));
         console.log("Updating results for user: " + user);
 
+        // Loop through each question and check for correct answer match.
         questionList.forEach((currentQuestion, questionNumber) => {
             var answerContainer = answerContainers[questionNumber];
             var selector = `input[name=question${questionNumber}]:checked`;
@@ -255,6 +265,7 @@ function runQuiz() {
             }
         });
 
+        // If all 10 questions are correct, award a win.
         if (correctAnswers == 10) {
             console.log("The user got all 10 questions right, the has a win!");
             resultsContainer.innerHTML = "You got all the questions right! You have been awarded a win for you efforts.";
@@ -268,6 +279,7 @@ function runQuiz() {
             resultsContainer.innerHTML = "You got " + correctAnswers + " out of " + questionList.length + " answers correct.";
         }
 
+        // Sockets to recieve updated from server regarding data input.
         socket.on("user wins success", function() {
             console.log("The user wins were upodated successfully.");
         });
@@ -276,7 +288,8 @@ function runQuiz() {
             console.log("There was an error when updating the user wins.");
         });
     }
-    
+
+    // Change the question slide.
     function changeQuestion(n) {
         slides[currentSlide].classList.remove("currentSlide");
         slides[n].classList.add("currentSlide");
@@ -295,10 +308,12 @@ function runQuiz() {
         }
     }
     
+    // Go to next question.
     function nextQuestion() {
         changeQuestion(currentSlide + 1);
     }
     
+    // Go back to previous question.
     function previousQuestion() {
         changeQuestion(currentSlide - 1);
     }
@@ -322,6 +337,7 @@ function runQuiz() {
     previousButton.addEventListener("click", previousQuestion);
     nextButton.addEventListener("click", nextQuestion);
 
+    //Build quiz function - build from previously defined question bank.
     function buildQuiz() {
         
         console.log("Quiz is being constructed...");
@@ -353,11 +369,13 @@ function runQuiz() {
     }
 }
 
+//Open and close chat window.
 function openChatWindow() {
     $("#chatWindow").slideToggle("slow");
 }
 
-$(function () {
+// Function for broadcasting chat message to server.
+$(function() {
     var socket = io();
     user = localStorage.getItem("Username");
     $("form").submit(function () {
@@ -371,6 +389,7 @@ $(function () {
     });
 });
 
+// Login details validation.
 function validateLoginDetails() {
     console.log("Entered validate login details.")
     var localUsername = document.getElementById("loginUsername").value;
@@ -379,6 +398,7 @@ function validateLoginDetails() {
     checkDatabaseLoginDetails(localUsername, localPassword);
 }
 
+// Generic function for checking the login details with the database.
 function checkDatabaseLoginDetails(username, password) {
     console.log("Entered check login details.")
     var socket = io();
@@ -411,6 +431,7 @@ function checkDatabaseLoginDetails(username, password) {
     });
 }
 
+// Registering the login details from the modal.
 function registerLoginDetails() {
     var localUsername = document.getElementById("registrationUsername").value;
     var localEmail = document.getElementById("registrationEmail").value;
@@ -420,7 +441,7 @@ function registerLoginDetails() {
 
 }
 
-
+// Generic function for inserting information into the database.
 function insertDataIntoDatabase(username, email, password) {
     var socket = io();
 
@@ -442,6 +463,7 @@ function insertDataIntoDatabase(username, email, password) {
     });
 }
 
+// Factory pattern for creating users.
 factory = {
     create: function (product, username, password, email) {
         console.log("Factory method entered.")
@@ -470,7 +492,7 @@ factory = {
     }
 }
 
-
+// Sending delete database instructions to the server.
 function deleteDatabase() {
     console.log("Cleint is attempting to delete the database...");
     var socket = io();
@@ -488,6 +510,8 @@ function deleteDatabase() {
         console.log("-------------------------------------------------");
     });
 }
+
+//Page relocation.
 
 function goToTestingPage() {
     window.location.href = "/TestingPage"
