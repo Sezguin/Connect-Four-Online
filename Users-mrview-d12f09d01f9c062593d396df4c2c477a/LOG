@@ -1,5 +1,5 @@
-2019/01/10-13:08:37.649 f00 Recovering log #15
-2019/01/10-13:08:37.649 f00 Level-0 table #18: started
-2019/01/10-13:08:37.657 f00 Level-0 table #18: 237 bytes OK
-2019/01/10-13:08:37.662 f00 Delete type=0 #15
-2019/01/10-13:08:37.662 f00 Delete type=3 #13
+2019/01/10-13:09:24.192 5bc Recovering log #19
+2019/01/10-13:09:24.192 5bc Level-0 table #21: started
+2019/01/10-13:09:24.202 5bc Level-0 table #21: 237 bytes OK
+2019/01/10-13:09:24.206 5bc Delete type=0 #19
+2019/01/10-13:09:24.206 5bc Delete type=3 #17
