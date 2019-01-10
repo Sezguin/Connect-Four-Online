@@ -95,6 +95,7 @@ io.on("connection", function(socket) {
         });
     });
 
+    // Checking the login details of the user.
     socket.on("login user", function(msg) {
         var id = String(msg._id);
         var username = msg.Username;
@@ -106,6 +107,7 @@ io.on("connection", function(socket) {
         console.log("Sent username = " + username);
         console.log("Sent password = " + password);
 
+        // Searching the database for the user details.
         userDatabase.get(id, function(err, doc) {
             if(err) {
                 console.log(err);
@@ -126,6 +128,7 @@ io.on("connection", function(socket) {
         });
     });
 
+    // Setting the online state of the user to online.
     socket.on("set online", function(msg) {
         console.log("Setting the online status of the user.");
 
@@ -137,6 +140,7 @@ io.on("connection", function(socket) {
         if (online) {
             console.log("Setting " + id + " to be ONLINE.");
 
+            // Getting the relevant details from the database.
             userDatabase.get(id, function(err, doc) {
                 if(err) {
                     console.log("There was an error retrieving the document. See the output below:");
@@ -159,6 +163,7 @@ io.on("connection", function(socket) {
                     console.log("--- New Document ---");
                     console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
 
+                    // Updating the database.
                     userDatabase.put(doc, function(err, doc) {
                         if(err) {
                             console.log("There was an error inserting the document. See the output below:");
@@ -174,6 +179,7 @@ io.on("connection", function(socket) {
         } else if (!online) {
             console.log("Setting " + id + " to be OFFINE.");
 
+            // Setting the online state of the user to offline.
             userDatabase.get(id, function(err, doc) {
                 if(err) {
                     console.log("There was an error retrieving the document. See the output below:");
@@ -197,6 +203,7 @@ io.on("connection", function(socket) {
                     console.log("--- New Document ---");
                     console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Online);
 
+                    // Updating the database details.
                     userDatabase.put(doc, function(err, doc) {
                         if(err) {
                             console.log("There was an error inserting the document. See the output below:");
@@ -212,6 +219,7 @@ io.on("connection", function(socket) {
 
     });
 
+    // Deleting the entire database upon request.
     socket.on("delete database", function() {
         console.log("Attempting to delete database...");
         userDatabase.destroy(function(err) {
@@ -226,6 +234,7 @@ io.on("connection", function(socket) {
         });
     });
 
+    // Retrieve the amount of wins associated with the user.
     socket.on("fetch user wins", function() {
         console.log("Fetching list of user wins.");
         
@@ -252,10 +261,12 @@ io.on("connection", function(socket) {
         })
     });
 
+    // Fetching all online users from the database/
     socket.on("fetch online users", function() {
 
         console.log("Fetching list of online users.");
         
+        // Creating a custom index.
         userDatabase.createIndex({
             index: {
                 fields: ["Online"],
@@ -275,6 +286,7 @@ io.on("connection", function(socket) {
         });   
     });
 
+    // Updating the wins of the user.
     socket.on("set wins", function(msg) {
         
         console.log("Updating the wins of the user.")
@@ -292,6 +304,7 @@ io.on("connection", function(socket) {
                 var wins = doc.Wins;
                 console.log("Previous wins: " + wins);
 
+                // Increasing wins by 1.
                 wins++;
                 console.log("Updated wins: " + wins);
 
@@ -312,6 +325,7 @@ io.on("connection", function(socket) {
                 console.log("--- New Document ---");
                 console.log("Revision: " + doc._rev + "ID: " + doc._id + "Online: " + doc.Wins);
 
+                // Updating database information.
                 userDatabase.put(doc, function(err, doc) {
                     if(err) {
                         console.log("There was an error inserting the document. See the output below:");
@@ -327,12 +341,14 @@ io.on("connection", function(socket) {
     });
 });
 
+// Show information about the database structure.
 function showUserDatabaseInformation() {
     userDatabase.info().then(function(info) {
         console.log(info);
     });
 }
 
+// Listening for connectinos on appropriate port.
 server.listen(port, function(){
   console.log("Solar System Quiz server is listening on port: " + port);
 });
